@@ -1,0 +1,21 @@
+
+- name: Instala dependências
+  apt:
+    name: ['docker.io', 'docker-compose']
+    state: present
+    update_cache: yes
+
+- name: Cria diretório do Airflow
+  file:
+    path: /opt/airflow
+    state: directory
+
+- name: Copia docker-compose
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/airflow/docker-compose.yml
+
+- name: Inicia Airflow
+  shell: |
+    cd /opt/airflow
+    docker-compose up -d
